@@ -1,6 +1,9 @@
 package com.technopradyumn.campustrace;
 
+import static android.content.ContentValues.TAG;
+
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.technopradyumn.campustrace.adapter.ItemAdapter;
 import com.technopradyumn.campustrace.data.LostItem;
@@ -67,6 +71,7 @@ public class HomeFragment extends Fragment {
 
     private void loadAllItems() {
         db.collection("lostItems")
+                .orderBy("time", Query.Direction.DESCENDING)
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     itemList.clear();
@@ -77,15 +82,14 @@ public class HomeFragment extends Fragment {
                     adapter.notifyDataSetChanged();
                 })
                 .addOnFailureListener(e -> {
-//                    Log.e(TAG, "Error loading items", e);
-                    // Handle error
+                    Log.e(TAG, "Error loading items", e);
                 });
     }
 
     private void searchItems(String query) {
         db.collection("lostItems")
-                .whereGreaterThanOrEqualTo("name", query)
-                .whereLessThan("name", query + "\uf8ff")
+                .whereGreaterThanOrEqualTo("category", query)
+                .whereLessThan("category", query + "\uf8ff")
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     itemList.clear();
@@ -96,8 +100,7 @@ public class HomeFragment extends Fragment {
                     adapter.notifyDataSetChanged();
                 })
                 .addOnFailureListener(e -> {
-//                    Log.e(TAG, "Error searching items", e);
-                    // Handle error
+                    Log.e(TAG, "Error searching items", e);
                 });
     }
 }

@@ -38,7 +38,7 @@
                 android:background="@android:color/transparent"
                 android:iconifiedByDefault="false"
                 android:maxLines="1"
-                android:queryHint="Search for Lost Item..."
+                android:queryHint="Search for Item name or category..."
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

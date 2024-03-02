@@ -20,8 +20,9 @@ import com.technopradyumn.campustrace.data.LostItem;
 import com.technopradyumn.campustrace.databinding.FragmentFoundBinding;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
-public class FoundFragment extends Fragment {
+public class AddItemFragment extends Fragment {
 
     private static final int REQUEST_IMAGE_PICKER = 100;
     private FragmentFoundBinding binding;
@@ -29,12 +30,12 @@ public class FoundFragment extends Fragment {
     private FirebaseFirestore db;
     private StorageReference storageRef;
 
-    public FoundFragment() {
+    public AddItemFragment() {
         // Required empty public constructor
     }
 
-    public static FoundFragment newInstance() {
-        return new FoundFragment();
+    public static AddItemFragment newInstance() {
+        return new AddItemFragment();
     }
 
     @Override
@@ -113,17 +114,17 @@ public class FoundFragment extends Fragment {
                 })
                 .addOnFailureListener(e -> {
                     // Error uploading image
-                    Log.e("FoundFragment", "Error uploading image: " + e.getMessage());
+                    Log.e("AddItemFragment", "Error uploading image: " + e.getMessage());
                     Toast.makeText(requireContext(), "Error uploading image. Please try again.", Toast.LENGTH_SHORT).show();
                 });
     }
 
     private void addFoundItemToFirestore(String imageUrl) {
-        String itemName = binding.name.getText().toString();
-        String category = binding.category.getText().toString();
-        String locationLastSeen = binding.location.getText().toString();
-        String contactNo = binding.contactNumber.getText().toString();
-        String additionalDetail = binding.description.getText().toString();
+        String itemName = Objects.requireNonNull(binding.name.getText()).toString().toLowerCase();
+        String category = Objects.requireNonNull(binding.category.getText()).toString().toLowerCase();
+        String locationLastSeen = Objects.requireNonNull(binding.location.getText()).toString().toLowerCase();
+        String contactNo = Objects.requireNonNull(binding.contactNumber.getText()).toString().toLowerCase();
+        String additionalDetail = Objects.requireNonNull(binding.description.getText()).toString().toLowerCase();
         String time = getTime();
         String status = "Lost";
 
@@ -140,16 +141,16 @@ public class FoundFragment extends Fragment {
                     db.collection("lostItems").document(itemId)
                             .set(foundItem)
                             .addOnSuccessListener(aVoid -> {
-                                Log.d("FoundFragment", "Item updated with ID: " + itemId);
+                                Log.d("AddItemFragment", "Item updated with ID: " + itemId);
                                 Toast.makeText(requireContext(), "Item reported successfully!", Toast.LENGTH_SHORT).show();
                             })
                             .addOnFailureListener(e -> {
-                                Log.e("FoundFragment", "Error updating item: " + e.getMessage());
+                                Log.e("AddItemFragment", "Error updating item: " + e.getMessage());
                                 Toast.makeText(requireContext(), "Failed to report item. Please try again.", Toast.LENGTH_SHORT).show();
                             });
                 })
                 .addOnFailureListener(e -> {
-                    Log.e("FoundFragment", "Error adding document: " + e.getMessage());
+                    Log.e("AddItemFragment", "Error adding document: " + e.getMessage());
                     Toast.makeText(requireContext(), "Failed to report item. Please try again.", Toast.LENGTH_SHORT).show();
                 });
     }
@@ -166,7 +167,7 @@ public class FoundFragment extends Fragment {
         LocalDateTime currentDateTime = LocalDateTime.now();
 
         // Define a format for the date and time
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
 
         // Format the current date and time using the defined format
         String formattedDateTime = currentDateTime.format(formatter);

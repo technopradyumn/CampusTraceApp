@@ -40,8 +40,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="Item Name"
-                android:textSize="18sp"
+                android:text="Name"
+                android:textSize="25sp"
                 app:layout_constraintEnd_toEndOf="@+id/imageView"
                 app:layout_constraintStart_toStartOf="@+id/imageView"
                 app:layout_constraintTop_toBottomOf="@+id/imageView" />
@@ -51,7 +51,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="Category"
+                android:hint="Money,cloths etc.."
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="@id/textName"
                 app:layout_constraintStart_toStartOf="@id/textName"
@@ -63,6 +63,7 @@
                 android:layout_height="wrap_content"
                 android:text="Time"
                 android:textSize="14sp"
+                android:textColor="#55768C"
                 app:layout_constraintBottom_toBottomOf="@+id/textStatus"
                 app:layout_constraintEnd_toEndOf="@id/textCategory"
                 app:layout_constraintTop_toTopOf="@+id/textStatus" />
@@ -85,6 +86,7 @@
                 android:layout_marginTop="8dp"
                 android:text="Status"
                 android:textSize="14sp"
+                android:textColor="#E53935"
                 app:layout_constraintStart_toStartOf="@+id/textCategory"
                 app:layout_constraintTop_toBottomOf="@+id/description" />
 
@@ -94,9 +96,33 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="Description"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="@+id/textCategory"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/textCategory"
+                app:layout_constraintTop_toBottomOf="@+id/location" />
+
+            <TextView
+                android:id="@+id/contactNumber"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/light_blue_600"
+                android:hint="Contact Number"
+                android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="@+id/textCategory"
                 app:layout_constraintStart_toStartOf="@+id/textCategory"
                 app:layout_constraintTop_toBottomOf="@+id/textCategory" />
+
+            <TextView
+                android:id="@+id/location"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="Tuck Shop, Easy Day, Room No. etc..."
+                app:layout_constraintEnd_toEndOf="@+id/contactNumber"
+                app:layout_constraintStart_toStartOf="@+id/contactNumber"
+                app:layout_constraintTop_toBottomOf="@+id/contactNumber" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
