@@ -24,14 +24,14 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="16dp">
+            android:layout_height="wrap_content">
 
             <ImageView
                 android:id="@+id/imageView"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                android:layout_width="300dp"
+                android:layout_height="300dp"
                 android:src="@drawable/baseline_image_24"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -39,16 +39,18 @@
                 android:id="@+id/textName"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:text="Item Name"
                 android:textSize="18sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/imageView"
-                app:layout_constraintTop_toTopOf="@id/imageView" />
+                app:layout_constraintEnd_toEndOf="@+id/imageView"
+                app:layout_constraintStart_toStartOf="@+id/imageView"
+                app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
             <TextView
                 android:id="@+id/textCategory"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:text="Category"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="@id/textName"
@@ -61,8 +63,9 @@
                 android:layout_height="wrap_content"
                 android:text="Time"
                 android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="@+id/textStatus"
                 app:layout_constraintEnd_toEndOf="@id/textCategory"
-                app:layout_constraintTop_toBottomOf="@id/textCategory" />
+                app:layout_constraintTop_toTopOf="@+id/textStatus" />
 
             <TextView
                 android:id="@+id/textLocation"
@@ -79,10 +82,21 @@
                 android:id="@+id/textStatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:text="Status"
                 android:textSize="14sp"
-                app:layout_constraintStart_toStartOf="@+id/textLocation"
-                app:layout_constraintTop_toBottomOf="@id/textLocation" />
+                app:layout_constraintStart_toStartOf="@+id/textCategory"
+                app:layout_constraintTop_toBottomOf="@+id/description" />
+
+            <TextView
+                android:id="@+id/description"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Description"
+                app:layout_constraintEnd_toEndOf="@+id/textCategory"
+                app:layout_constraintStart_toStartOf="@+id/textCategory"
+                app:layout_constraintTop_toBottomOf="@+id/textCategory" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>

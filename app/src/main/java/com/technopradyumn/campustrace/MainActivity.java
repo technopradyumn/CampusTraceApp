@@ -11,13 +11,20 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.technopradyumn.campustrace.data.LostItem;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     private BottomNavigationView bottomNav;
+
+    private LostItemViewModel lostItemViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +35,15 @@ public class MainActivity extends AppCompatActivity {
         replaceFragment(new HomeFragment());
 
         bottomNav = findViewById(R.id.bottomNavView);
+        lostItemViewModel = new ViewModelProvider(this).get(LostItemViewModel.class);
+
+        // Observe the LiveData
+        lostItemViewModel.getLostItems().observe(this, new Observer<List<LostItem>>() {
+            @Override
+            public void onChanged(List<LostItem> lostItems) {
+                // Update the UI with the new list of LostItems
+            }
+        });
 
         bottomNav.setOnItemSelectedListener((NavigationBarView.OnItemSelectedListener) item -> {
             int menuItemId = item.getItemId();
@@ -38,12 +54,13 @@ public class MainActivity extends AppCompatActivity {
             } else if (menuItemId == R.id.nav_found) {
                 replaceFragment(new FoundFragment());
                 return true;
-            }else if(menuItemId == R.id.nav_notifications){
-                replaceFragment(new NotificationFragment());
-            }else {
-                replaceFragment(new HomeFragment());
-                return true;
             }
+//            else if(menuItemId == R.id.nav_notifications){
+//                replaceFragment(new NotificationFragment());
+//            }else {
+//                replaceFragment(new HomeFragment());
+//                return true;
+//            }
 
             return true;
         });

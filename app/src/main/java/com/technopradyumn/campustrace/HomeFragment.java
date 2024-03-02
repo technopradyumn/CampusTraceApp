@@ -1,10 +1,11 @@
 package com.technopradyumn.campustrace;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.SearchView;
 import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -14,69 +15,89 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.technopradyumn.campustrace.adapter.ItemAdapter;
 import com.technopradyumn.campustrace.data.LostItem;
 import java.util.ArrayList;
-import com.technopradyumn.campustrace.adapter.ItemAdapter.OnItemClickListener;
 import java.util.List;
 
-public class HomeFragment extends Fragment implements ItemAdapter.OnItemClickListener {
+public class HomeFragment extends Fragment {
 
+    private FirebaseFirestore db;
     private RecyclerView recyclerView;
     private ItemAdapter adapter;
     private List<LostItem> itemList;
-    private FirebaseFirestore db;
-
-    public HomeFragment() {
-        // Required empty public constructor
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        db = FirebaseFirestore.getInstance();
-        itemList = new ArrayList<>();
-        adapter = new ItemAdapter(getContext(), itemList);
-        adapter.setOnItemClickListener(this);
-        fetchLostItemsFromFirestore();
-    }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+
+        // Initialize Firestore
+        db = FirebaseFirestore.getInstance();
+
+        // Initialize RecyclerView and adapter
         recyclerView = view.findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        itemList = new ArrayList<>();
+        adapter = new ItemAdapter(getActivity(), itemList);
         recyclerView.setAdapter(adapter);
+
+        // Setup SearchView
+        SearchView searchView = view.findViewById(R.id.searchView);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                // Perform Firestore query based on the search query
+                if (newText.isEmpty()) {
+                    loadAllItems(); // Load all items when search query is empty
+                } else {
+                    searchItems(newText);
+                }
+                return true;
+            }
+        });
+
+        // Load all items initially
+        loadAllItems();
+
         return view;
     }
 
-    private void fetchLostItemsFromFirestore() {
+    private void loadAllItems() {
         db.collection("lostItems")
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
-                    for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
-                        LostItem lostItem = documentSnapshot.toObject(LostItem.class);
-                        itemList.add(lostItem);
+                    itemList.clear();
+                    for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                        LostItem item = document.toObject(LostItem.class);
+                        itemList.add(item);
                     }
                     adapter.notifyDataSetChanged();
                 })
                 .addOnFailureListener(e -> {
-                    Toast.makeText(getContext(), "Failed to fetch lost items", Toast.LENGTH_SHORT).show();
+//                    Log.e(TAG, "Error loading items", e);
+                    // Handle error
                 });
     }
 
-    @Override
-    public void onItemClick(int position) {
-        LostItem selectedItem = itemList.get(position);
-        String itemId = String.valueOf(selectedItem.getItemId());
-
-        // Start the new activity and pass the itemId as an extra
-        Intent intent = new Intent(getContext(), ItemDetailActivity.class);
-        intent.putExtra("itemId", itemId);
-        startActivity(intent);
+    private void searchItems(String query) {
+        db.collection("lostItems")
+                .whereGreaterThanOrEqualTo("name", query)
+                .whereLessThan("name", query + "\uf8ff")
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    itemList.clear();
+                    for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                        LostItem item = document.toObject(LostItem.class);
+                        itemList.add(item);
+                    }
+                    adapter.notifyDataSetChanged();
+                })
+                .addOnFailureListener(e -> {
+//                    Log.e(TAG, "Error searching items", e);
+                    // Handle error
+                });
     }
-
-
-
 }
-
