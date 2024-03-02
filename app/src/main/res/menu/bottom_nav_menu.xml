@@ -1,0 +1,14 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_home"
+        android:icon="@drawable/baseline_space_dashboard_24"/>
+<!--    <item-->
+<!--        android:id="@+id/nav_report"-->
+<!--        android:title="Report" />-->
+    <item
+        android:id="@+id/nav_found"
+        android:icon="@drawable/baseline_add_24"/>
+    <item
+        android:id="@+id/nav_notifications"
+        android:icon="@drawable/baseline_notifications_24"/>
+</menu>
