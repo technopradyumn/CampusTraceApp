@@ -43,6 +43,9 @@ public class HomeFragment extends Fragment {
         adapter = new ItemAdapter(getActivity(), itemList);
         recyclerView.setAdapter(adapter);
 
+        ProgressBar progressBar = view.findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.GONE);
+
         // Setup SearchView
         SearchView searchView = view.findViewById(R.id.searchView);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
